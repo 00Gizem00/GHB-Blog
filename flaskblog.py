@@ -23,9 +23,13 @@ def about():
 def post():
     return render_template('post.html')
 
-@app.route('/pos2')
+@app.route('/post2', methods=['GET'])
 def post2():
-    return render_template('post2.html')
+    with sqlite3.connect('blog.db') as con:
+        cur = con.cursor()
+        cur.execute("SELECT * FROM blogs")
+        con.commit()
+        return render_template('post2.html', blogs=cur.fetchall())
 
 @app.route('/contact')
 def contact():
