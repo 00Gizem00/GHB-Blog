@@ -8,8 +8,12 @@ cors = CORS(app)
 
 @app.route('/')
 @app.route('/index')
+def index():
+     return render_template('index.html')
+
+@app.route('/base')
 def home():
-    return render_template('index.html', msg='Clean Blog')
+    return render_template('base.html', msg='Clean Blog')
 
 @app.route('/about')
 def about():
@@ -19,9 +23,15 @@ def about():
 def post():
     return render_template('post.html')
 
+@app.route('/pos2')
+def post2():
+    return render_template('post2.html')
+
 @app.route('/contact')
 def contact():
     return render_template('contact.html')
+
+
 
 
 
