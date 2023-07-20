@@ -23,9 +23,11 @@ def about():
 def post():
     return render_template('post.html')
 
-@app.route('/pos2')
+@app.route('/post2')
 def post2():
     return render_template('post2.html')
+
+
 
 @app.route('/contact')
 def contact():
