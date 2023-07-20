@@ -6,9 +6,13 @@
     {% for row in rows %}
         <a href="/post/{{ row.id }}">
             <h2 class="post-title" >{{ row.title }}</h2>
-            <h3 class="post-subtitle">{{ row.content }}</h3>
+            <h3 class="post-subtitle">{{ row.subtitle }}</h3>
         </a>
-        <!-- <p class="post-meta">{{ row.content }}</p> -->
+        <p class="post-meta">
+            Posted by
+            <a href="#!">Start Bootstrap</a>
+            on {{ row.created_on}}
+        </p>
         <hr class="my-4" />
     {% endfor %}
 </div>
