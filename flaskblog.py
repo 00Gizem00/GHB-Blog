@@ -25,7 +25,11 @@ def post():
 
 @app.route('/post2')
 def post2():
-    return render_template('post2.html')
+    with sqlite3.connect('blog.db') as con:
+        cur = con.cursor()
+        cur.execute("SELECT * FROM blogs")
+        con.commit()
+        return render_template('post2.html', blogs=cur.fetchall())
 
 
 
