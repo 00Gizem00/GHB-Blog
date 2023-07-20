@@ -2,7 +2,12 @@
 
 {% block content %}
 
-<p>Lorem ipsum dolor sit amet.</p>
+<div class="post-preview">
+    {% for row in rows %}
+        <a  class="post-title" href="/post/{{ row.id }}">{{ row.title }}</a>
+        <p class="post-meta">{{ row.content }}</p>
+    {% endfor %}
+</div>
 
 {% endblock %}
 

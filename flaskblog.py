@@ -12,7 +12,16 @@ DATABASE = 'blog.db'
 @app.route('/')
 @app.route('/index')
 def index():
-     return render_template('index.html')
+    conn = sqlite3.connect('blog.db')
+    db = conn.cursor()
+    cur = db.execute('SELECT * FROM blogs')
+    rows = cur.fetchall()
+
+    posts_data = []
+    for row in rows:
+        posts_data.append({"id": row[0], "title": row[1], "content": row[2]})
+    conn.close()
+    return render_template('index.html', msg='Clean Blog', rows=posts_data)
 
 @app.route('/base')
 def home():
