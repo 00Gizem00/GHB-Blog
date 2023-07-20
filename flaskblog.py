@@ -16,7 +16,7 @@ def index():
 
 @app.route('/base')
 def home():
-    return render_template('base.html', msg='Clean Blog')
+    return render_template('base.html', msg='ALOOOOOO')
 
 @app.route('/about')
 def about():
