@@ -19,7 +19,7 @@ def index():
 
     posts_data = []
     for row in rows:
-        posts_data.append({"id": row[0], "title": row[1], "content": row[2]})
+        posts_data.append({"id": row[0], "title": row[1], "subtitle":row[2], "content": row[3], "created_on": row[4]})
     conn.close()
     return render_template('index.html', msg='Clean Blog', rows=posts_data)
 
@@ -44,7 +44,7 @@ def post2():
 
     posts_data = []
     for row in rows:
-        posts_data.append({"id": row[0], "title": row[1], "content": row[2]})
+        posts_data.append({"id": row[0], "title": row[1], "subtitle":row[2], "content": row[3], "created_on": row[4]})
     conn.close()
     return render_template('post2.html', rows=posts_data)
 
@@ -52,11 +52,11 @@ def post2():
 def detay(id):
     conn = sqlite3.connect('blog.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT id, title, content FROM blogs WHERE id = ?', (id,))
+    cursor.execute('SELECT id, title, subtitle, content, created_on FROM blogs WHERE id = ?', (id,))
     result = cursor.fetchone()
 
 
-    posts_data = ({"id": result[0], "title": result[1], "content": result[2]})
+    posts_data = ({"id": result[0], "title": result[1], "subtitle":result[2], "content": result[3], "created_on": result[4]})
 
     conn.close()
     return render_template('postdetay.html', post=posts_data)
