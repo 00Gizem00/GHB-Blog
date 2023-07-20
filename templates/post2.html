@@ -8,10 +8,10 @@
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
-                    {% for blog in blogs %}
-                        <h1>{blog.name}</h1>
-                        <p>{blog.content}</p>
-                    {% endfor %}
+                {% for row in rows %}
+                    <a href="/post/{{ row.id }}">{{ row.title }}</a>
+                    <p>{{ row.content }}</p>
+                {% endfor %}
                     Placeholder text by
                     <a href="http://spaceipsum.com/">Space Ipsum</a>
                     &middot; Images by
@@ -21,6 +21,8 @@
         </div>
     </div>
 </article>
+
+
 
 
 {% endblock %}

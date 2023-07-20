@@ -1,9 +1,12 @@
 from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 import sqlite3
+from flask import g
 
 app = Flask(__name__, '/assets', 'assets')
 cors = CORS(app)
+
+DATABASE = 'blog.db'
 
 
 @app.route('/')
@@ -23,13 +26,33 @@ def about():
 def post():
     return render_template('post.html')
 
-@app.route('/post2', methods=['GET'])
+@app.route('/post2')
 def post2():
-    with sqlite3.connect('blog.db') as con:
-        cur = con.cursor()
-        cur.execute("SELECT * FROM blogs")
-        con.commit()
-        return render_template('post2.html', blogs=cur.fetchall())
+    conn = sqlite3.connect('blog.db')
+    db = conn.cursor()
+    cur = db.execute('SELECT * FROM blogs')
+    rows = cur.fetchall()
+
+    posts_data = []
+    for row in rows:
+        posts_data.append({"id": row[0], "title": row[1], "content": row[2]})
+    conn.close()
+    return render_template('post2.html', rows=posts_data)
+
+@app.route('/post/<int:id>')
+def detay(id):
+    conn = sqlite3.connect('blog.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT id, title, content FROM blogs WHERE id = ?', (id,))
+    result = cursor.fetchone()
+
+
+    posts_data = ({"id": result[0], "title": result[1], "content": result[2]})
+
+    conn.close()
+    return render_template('postdetay.html', post=posts_data)
+
+
 
 @app.route('/contact')
 def contact():
