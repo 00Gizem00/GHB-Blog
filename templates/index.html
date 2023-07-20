@@ -4,8 +4,11 @@
 
 <div class="post-preview">
     {% for row in rows %}
-        <a  class="post-title" href="/post/{{ row.id }}">{{ row.title }}</a>
-        <p class="post-meta">{{ row.content }}</p>
+        <a href="/post/{{ row.id }}">
+            <h2 class="post-title" >{{ row.title }}</h2>
+            <h3 class="post-subtitle">{{ row.content }}</h3>
+        </a>
+        <!-- <p class="post-meta">{{ row.content }}</p> -->
         <hr class="my-4" />
     {% endfor %}
 </div>
