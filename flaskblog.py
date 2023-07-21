@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, redirect
 from flask_cors import CORS
 import sqlite3
 from flask import g
@@ -90,6 +90,20 @@ def list_posts():
 
 
 
+@app.route('/add_post', methods=['POST'])
+def add_post():
+    title = request.form['title']
+    subtitle = request.form['subtitle']
+    content = request.form['content']
+    created_on = request.form['created_on']
+
+    conn = sqlite3.connect('blog.db')
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO blogs (title, subtitle, content, created_on) VALUES (?, ?, ?, ?)', (title, subtitle, content, created_on))
+    conn.commit()
+    conn.close()
+
+    return redirect('/editor')  
 
 
 
