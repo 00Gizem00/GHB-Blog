@@ -3,6 +3,7 @@ from flask_cors import CORS
 import sqlite3
 from flask import g
 
+
 app = Flask(__name__, '/assets', 'assets')
 cors = CORS(app)
 
@@ -72,6 +73,31 @@ def contact():
 
 
 
+
+
+
+
+@app.route('/editor')
+def list_posts():
+    conn = sqlite3.connect('blog.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT id, title, subtitle, content, created_on FROM blogs')
+    rows = cursor.fetchall()
+
+    posts_data = []
+    for row in rows:
+        posts_data.append({
+            "id": row[0],
+            "title": row[1],
+            "subtitle": row[2],
+            "content": row[3],
+            "created_on": row[4]
+
+            
+        })
+
+    conn.close()
+    return jsonify(posts_data)
 
 
 
