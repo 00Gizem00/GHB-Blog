@@ -81,23 +81,17 @@ def contact():
 def list_posts():
     conn = sqlite3.connect('blog.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT id, title, subtitle, content, created_on FROM blogs')
+    cursor.execute('SELECT id, title FROM blogs') 
     rows = cursor.fetchall()
 
-    posts_data = []
-    for row in rows:
-        posts_data.append({
-            "id": row[0],
-            "title": row[1],
-            "subtitle": row[2],
-            "content": row[3],
-            "created_on": row[4]
-
-            
-        })
-
+    posts_data = [{"id": row[0], "title": row[1]} for row in rows]
     conn.close()
-    return jsonify(posts_data)
+    return render_template('adminpanel.html', posts_data=posts_data) 
+
+
+
+
+
 
 
 
@@ -106,4 +100,5 @@ def list_posts():
 
 
 if __name__== "__main__":
+    app.debug = True
     app.run()
