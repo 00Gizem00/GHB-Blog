@@ -106,6 +106,17 @@ def add_post():
     return redirect('/editor')  
 
 
+@app.route('/delete_post/<int:id>', methods=['POST'])
+def delete_post(id):
+    conn = sqlite3.connect('blog.db')
+    cursor = conn.cursor()
+
+    
+    cursor.execute('DELETE FROM blogs WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+
+    return redirect('/editor')
 
 
 
