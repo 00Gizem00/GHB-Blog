@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request, render_template, redirect
 from flask_cors import CORS
 import sqlite3
 from flask import g
+from dbHelper import get_db_connection, get_posts
 
 
 app = Flask(__name__, '/assets', 'assets')
@@ -24,17 +25,9 @@ def index():
     conn.close()
     return render_template('index.html', msg='Clean Blog', rows=posts_data)
 
-@app.route('/base')
-def home():
-    return render_template('base.html', msg='ALOOOOOO')
-
 @app.route('/about')
 def about():
     return render_template('about.html')
-
-@app.route('/post')
-def post():
-    return render_template('post.html')
 
 @app.route('/post2')
 def post2():
@@ -64,17 +57,9 @@ def detay(id):
 
 
 
-
-
 @app.route('/contact')
 def contact():
     return render_template('contact.html')
-
-
-
-
-
-
 
 
 @app.route('/editor')
@@ -87,7 +72,6 @@ def list_posts():
     posts_data = [{"id": row[0], "title": row[1]} for row in rows]
     conn.close()
     return render_template('adminpanel.html', posts_data=posts_data) 
-
 
 
 @app.route('/add_post', methods=['POST'])
