@@ -1,0 +1,19 @@
+
+
+<h2>List of Posts:</h2>
+<ul>
+    {% for post in posts_data %}
+        <li>
+            <a href="/post/{{ post.id }}">{{ post.title }}</a>
+            <form method="POST" action="/delete_post/{{ post.id }}" style="display:inline">
+                <button type="submit">Delete</button>
+            </form>
+            <form method="GET" action="/edit_post/{{ post.id }}" style="display:inline">
+                <button type="submit">Edit</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>
+
+
+
