@@ -2,12 +2,17 @@ from flask import Flask, jsonify, request, render_template, redirect
 from flask_cors import CORS
 import sqlite3
 from flask import g
+from db_helper import get_all_posts, get_post_by_slug
 
 
 app = Flask(__name__, '/assets', 'assets')
 cors = CORS(app)
 
 DATABASE = 'blog.db'
+
+# @app.route('//')
+# def index2():
+#     return get_all_posts()
 
 
 @app.route('/')
@@ -20,7 +25,7 @@ def index():
 
     posts_data = []
     for row in rows:
-        posts_data.append({"id": row[0], "title": row[1], "subtitle":row[2], "content": row[3], "created_on": row[4]})
+        posts_data.append({"id": row[0], "title": row[1], "subtitle":row[2], "content": row[4], "created_on": row[5]})
     conn.close()
     return render_template('index.html', msg='Clean Blog', rows=posts_data)
 
@@ -45,22 +50,28 @@ def post2():
 
     posts_data = []
     for row in rows:
-        posts_data.append({"id": row[0], "title": row[1], "subtitle":row[2], "content": row[3], "created_on": row[4]})
+        posts_data.append({"id": row[0], "title": row[1], "subtitle":row[2], "content": row[4], "created_on": row[5]})
     conn.close()
     return render_template('post2.html', rows=posts_data)
 
-@app.route('/post/<int:id>')
-def detay(id):
-    conn = sqlite3.connect('blog.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT id, title, subtitle, content, created_on FROM blogs WHERE id = ?', (id,))
-    result = cursor.fetchone()
+@app.route('/post/<slug>')
+def detay(slug):
+    post = get_post_by_slug(slug)
+    
+    
+    # conn = sqlite3.connect('blog.db')
+    # cursor = conn.cursor()
+    # cursor.execute('SELECT id, title, subtitle, content, created_on FROM blogs WHERE id = ?', (id,))
+    # result = cursor.fetchone()
+
+    if post is None:
+        return render_template('404.html'), 404
 
 
-    posts_data = ({"id": result[0], "title": result[1], "subtitle":result[2], "content": result[3], "created_on": result[4]})
+    # posts_data = ({"id": result[0], "title": result[1], "subtitle":result[2], "content": result[5], "created_on": result[6]})
 
-    conn.close()
-    return render_template('postdetay.html', post=posts_data)
+    # conn.close()
+    return render_template('postdetay.html', post=post)
 
 
 
