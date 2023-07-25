@@ -10,60 +10,24 @@ cors = CORS(app)
 
 DATABASE = 'blog.db'
 
-# @app.route('//')
-# def index2():
-#     return get_all_posts()
-
 
 @app.route('/')
-@app.route('/index')
-def index():
-    conn = sqlite3.connect('blog.db')
-    db = conn.cursor()
-    cur = db.execute('SELECT * FROM blogs')
-    rows = cur.fetchall()
+@app.route('/<slug>')
+def detay(slug = None, msg = "GHB Blog"):
+    if slug:
+        post = get_post_by_slug(slug)
 
-    posts_data = []
-    for row in rows:
-        posts_data.append({"id": row[0], "title": row[1], "subtitle":row[2], "content": row[4], "created_on": row[5]})
-    conn.close()
-    return render_template('index.html', msg='Clean Blog', rows=posts_data)
+        if post == None:
+            return render_template('404.html', msg = "404-Sayfa Bulunamadi"), 404
+        
+        return render_template('postdetay.html', post=post)
+    else:
+        return render_template('index.html' , posts = get_all_posts(), msg = msg)
 
 @app.route('/about')
 def about():
     return render_template('about.html')
 
-@app.route('/post2')
-def post2():
-    conn = sqlite3.connect('blog.db')
-    db = conn.cursor()
-    cur = db.execute('SELECT * FROM blogs')
-    rows = cur.fetchall()
-
-    posts_data = []
-    for row in rows:
-        posts_data.append({"id": row[0], "title": row[1], "subtitle":row[2], "content": row[4], "created_on": row[5]})
-    conn.close()
-    return render_template('post2.html', rows=posts_data)
-
-@app.route('/post/<slug>')
-def detay(slug):
-    post = get_post_by_slug(slug)
-    
-    
-    # conn = sqlite3.connect('blog.db')
-    # cursor = conn.cursor()
-    # cursor.execute('SELECT id, title, subtitle, content, created_on FROM blogs WHERE id = ?', (id,))
-    # result = cursor.fetchone()
-
-    if post is None:
-        return render_template('404.html'), 404
-
-
-    # posts_data = ({"id": result[0], "title": result[1], "subtitle":result[2], "content": result[5], "created_on": result[6]})
-
-    # conn.close()
-    return render_template('postdetay.html', post=post)
 
 @app.route('/newpost')
 def newpost():
@@ -91,12 +55,13 @@ def list_posts():
 def add_post():
     title = request.form['title']
     subtitle = request.form['subtitle']
+    slug = request.form['slug']
     content = request.form['content']
     created_on = request.form['created_on']
 
     conn = sqlite3.connect('blog.db')
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO blogs (title, subtitle, content, created_on) VALUES (?, ?, ?, ?)', (title, subtitle, content, created_on))
+    cursor.execute('INSERT INTO blogs (title, subtitle, slug, content, created_on) VALUES (?, ?, ?, ?, ?)', (title, subtitle, slug, content, created_on))
     conn.commit()
     conn.close()
 
@@ -128,8 +93,6 @@ def update_post(id):
     conn.close()
 
     return redirect('/editor')
-
-
 
 
 if __name__== "__main__":

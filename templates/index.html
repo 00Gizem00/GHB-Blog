@@ -3,15 +3,15 @@
 {% block content %}
 
 <div class="post-preview">
-    {% for row in rows %}
-        <a href="/post/{{ row.id }}">
-            <h2 class="post-title" >{{ row.title }}</h2>
-            <h3 class="post-subtitle">{{ row.subtitle }}</h3>
+    {% for post in posts %}
+        <a href="/{{ post.slug }}">
+            <h2 class="post-title" >{{ post.title }}</h2>
+            <h3 class="post-subtitle">{{ post.subtitle }}</h3>
         </a>
         <p class="post-meta">
             Posted by
             <a href="#!">Start Bootstrap</a>
-            on {{ row.created_on}}
+            on {{ post.created_on}}
         </p>
         <hr class="my-4" />
     {% endfor %}

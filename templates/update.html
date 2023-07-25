@@ -4,11 +4,11 @@
 <ul>
     {% for post in posts_data %}
         <li>
-            <a href="/post/{{ post.id }}">{{ post.title }}</a>
-            <form method="POST" action="/delete_post/{{ post.id }}" style="display:inline">
+            <a href="/post/{{ post.slug }}">{{ post.title }}</a>
+            <form method="POST" action="/delete_post/{{ post.slug }}" style="display:inline">
                 <button type="submit">Delete</button>
             </form>
-            <form method="GET" action="/edit_post/{{ post.id }}" style="display:inline">
+            <form method="GET" action="/edit_post/{{ post.slug }}" style="display:inline">
                 <button type="submit">Edit</button>
             </form>
         </li>
